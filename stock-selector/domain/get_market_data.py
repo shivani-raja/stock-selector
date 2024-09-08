@@ -1,27 +1,34 @@
 import requests
 import pandas as pd
+from raw.currency_symbols import get_currency_symbols
 
-# api key
-api_key = "52a44d5f713429851c9f7961317e6877"
 
-# get list of ticker symbols - for now we import top 50 market cap stocks as at 15/06/2024 from a csv file
-# this is due to limitations in querying the API on free plan
+def get_market_data(ticker):
+    """gets stock market data from financial modelling prep API
 
-ticker_data = pd.read_csv("ticker_symbols.csv")
-ticker_list = ticker_data["Symbol"]
+    :return: ticker_data, financial statement data for the past 5 years
+    """
 
-# create df to store results
-financial_statements = pd.DataFrame()
+    # api key
+    api_key = "52a44d5f713429851c9f7961317e6877"
 
-# get data
-for ticker in ticker_list:
+    # get data
     url = f"https://financialmodelingprep.com/api/v3/income-statement/{ticker}?period=annual&apikey={api_key}"
     response = requests.get(url)
     if response.status_code == 200:
         data = response.json()
-        parsed_data = pd.json_normalize(data)
-        financial_statements = pd.concat([financial_statements, parsed_data])
-    else:
-        print(f"Failed to fetch data: {response.status_code}")
+        ticker_data = pd.json_normalize(data)
 
-print(financial_statements)
+        # add currency symbol for chart labels
+        currency_symbols = get_currency_symbols()
+        currency = ticker_data["reportedCurrency"].values[0]
+        ticker_data["currency_symbol"] = currency_symbols.get(currency)
+
+        # convert calendar year to int for charts
+        ticker_data["calendarYear"] = ticker_data["calendarYear"].astype(int)
+
+    else:
+        print(f"Failed to fetch data for {ticker}: {response.status_code}")
+        ticker_data = []
+
+    return ticker_data
