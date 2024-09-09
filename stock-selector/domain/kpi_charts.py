@@ -1,63 +1,145 @@
-import plotly.graph_objects as go
 from dash import html, dcc
+from raw.format_number import format_number
 from datetime import datetime
+import plotly.graph_objects as go
 
 config = {"displayModeBar": False}
 
 
-def update_kpi_charts(profile_data):
-    # create KPI charts
-    kpi_charts = go.Figure()
+def update_kpi_charts(profile_data, price_data):
 
-    # current price
-    kpi_charts.add_trace(
-        go.Indicator(
-            value=profile_data["price"],
-            number={"prefix": profile_data["currency_symbol"]},
-            title={"text": "Current Price"},
-            domain={"row": 0, "column": 0},
+    # create historical share price chart
+    price_chart = go.Figure()
+    price_chart.add_trace(
+        go.Scatter(
+            x=price_data["date"],
+            y=price_data["adjClose"],
+            mode="lines",
+            line=dict(color="#4BDB95"),
         )
     )
-
-    # market cap
-    kpi_charts.add_trace(
-        go.Indicator(
-            value=profile_data["mktCap"],
-            number={"prefix": profile_data["currency_symbol"]},
-            title={"text": "Market Cap"},
-            domain={"row": 0, "column": 1},
-        )
-    )
-
-    # beta
-    kpi_charts.add_trace(
-        go.Indicator(
-            value=profile_data["beta"],
-            title={"text": "Beta"},
-            domain={"row": 0, "column": 2},
-        )
-    )
-
-    # add ipo date
-    kpi_charts.add_trace(
-        go.Indicator(
-            value=datetime.strptime(profile_data["ipoDate"], "%Y-%m-%d").year,
-            title={"text": "IPO Date"},
-            domain={"row": 0, "column": 3},
-        )
-    )
-
-    kpi_charts.update_layout(
-        template="ggplot2",
+    price_chart.update_layout(
+        paper_bgcolor="#1A2038",
+        plot_bgcolor="#1A2038",
         font_family="Inter",
-        grid={"rows": 1, "columns": 4, "pattern": "independent"},
-        height=250,
+        font_color="#FFFFFF",
+        xaxis=dict(
+            rangeselector=dict(
+                buttons=list(
+                    [
+                        dict(count=1, label="1m", step="month", stepmode="backward"),
+                        dict(count=6, label="6m", step="month", stepmode="backward"),
+                        dict(count=1, label="YTD", step="year", stepmode="todate"),
+                        dict(count=1, label="1y", step="year", stepmode="backward"),
+                        dict(step="all"),
+                    ]
+                )
+            ),
+            type="date",
+        ),
+        yaxis_tickprefix=profile_data.currency_symbol,
+        hovermode="x"
     )
 
+    price_chart.update_yaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+    price_chart.update_xaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780",rangeselector_bgcolor='#243780',
+    )
+
+    # create KPI charts
     return [
-                html.H1(profile_data["companyName"]),
-                html.Img(src=profile_data["image"]),
-                html.H2("Company Overview"),
-                html.P(profile_data["description"]),
-                dcc.Graph(figure=kpi_charts, config=config),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.H1(profile_data["companyName"]),
+                        dcc.Graph(figure=price_chart, config=config),
+                    ],
+                    className="overview-chart",
+                ),
+                html.Div(
+                    [
+                        html.Img(src=profile_data["image"]),
+                        html.H2("Company Overview"),
+                        html.P(profile_data["description"][:1000]),
+                    ],
+                    className="overview-metrics",
+                ),
+            ],
+            className="company-overview",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.P("Current Price", className="kpi-header-a"),
+                        html.P(
+                            f"{profile_data.currency_symbol}{profile_data.price}",
+                            className="kpi-value",
+                        ),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Market Cap", className="kpi-header-b"),
+                        html.P(
+                            f"{profile_data.currency_symbol}{format_number(profile_data.mktCap)}",
+                            className="kpi-value",
+                        ),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Beta", className="kpi-header-a"),
+                        html.P(f"{profile_data.beta}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("IPO Date", className="kpi-header-b"),
+                        html.P(
+                            f"{datetime.strptime(profile_data.ipoDate,'%Y-%m-%d').strftime('%d/%m/%Y')}",
+                            className="kpi-value",
+                        ),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Sector", className="kpi-header-b"),
+                        html.P(f"{profile_data.sector}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("CEO", className="kpi-header-a"),
+                        html.P(f"{profile_data.ceo}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Country", className="kpi-header-b"),
+                        html.P(f"{profile_data.country}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Exchange", className="kpi-header-a"),
+                        html.P(
+                            f"{profile_data.exchangeShortName}", className="kpi-value"
+                        ),
+                    ],
+                    className="kpi-child",
+                ),
+            ],
+            className="kpi-charts",
+        ),
     ]

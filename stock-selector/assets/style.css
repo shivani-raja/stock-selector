@@ -1,3 +1,105 @@
+:root {
+  --background: #131526;
+  --chart-background: #1A2038;
+  --green: #4BDB95;
+  --pink: #FF72D9;
+  --blue: #588AFF;
+  --red: #FF3B4C;
+  --orange: #FF7C58;
+  --white: #FFFFFF;
+}
+
 body {
-    font-family: 'inter'
+    font-family: 'inter';
+    background-color: var(--background) !important
+}
+
+
+/* styling for company overview */
+
+.company-overview {
+    color: var(--white);
+    margin: 30px;
+    background-color: var(--chart-background);
+    padding: 30px;
+    border-radius: 15px;
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.company-overview > * {
+    width:100%;
+}
+
+.company-overview img {
+    width: 100px;
+}
+
+@media (min-width:768px) {
+    .overview-metrics {
+        width:calc(100% / 3);
+    }
+    .overview-chart {
+        width:calc(100% / 3 * 2);
+    }
+}
+
+/* styling for kpi charts */
+
+.kpi-charts {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    text-align: center;
+    margin: 30px;
+    background-color: var(--chart-background);
+    padding: 30px;
+    border-radius: 15px;
+}
+
+@media (max-width: 768px) {
+    .kpi-charts {
+        grid-template-columns: repeat(2,1fr) !important;
+    }
+}
+
+.kpi-header-a, .kpi-header-b {
+    font-size: 20px;
+    font-weight: 300;
+    margin: 10px;
+}
+
+.kpi-header-a {
+    color: var(--orange);
+}
+
+.kpi-header-b {
+    color: var(--pink);
+}
+
+.kpi-value {
+    font-size: 35px;
+    font-weight: 450;
+    margin: 2px;
+    color: var(--white);
+    margin: 0px 0px 20px;
+}
+
+/* styling for main charts row 1 */
+.main-charts-1 {
+    color: var(--white);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.pnl-chart, .sankey-chart {
+    background-color: var(--chart-background);
+    margin: 30px;
+    padding: 30px;
+    border-radius: 15px;
+}
+
+@media (min-width: 768px) {
+    .pnl-chart, .sankey-chart {
+        width: calc(50% - 120px);
+    }
 }

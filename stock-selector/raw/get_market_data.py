@@ -27,6 +27,11 @@ def get_market_data(ticker):
         # convert calendar year to int for charts
         ticker_data["calendarYear"] = ticker_data["calendarYear"].astype(int)
 
+        # add color column for PnL chart
+        ticker_data["color"] = ticker_data.apply(
+            lambda row: "#FF3B4C" if int(row["netIncome"]) < 0 else "#4BDB95", axis=1
+        )
+
     else:
         print(f"Failed to fetch data for {ticker}: {response.status_code}")
         ticker_data = []

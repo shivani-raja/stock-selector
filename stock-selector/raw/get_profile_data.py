@@ -32,6 +32,3 @@ def get_profile_data(ticker):
         profile_data = []
 
     return profile_data
-
-
-get_profile_data(ticker="AAPL")

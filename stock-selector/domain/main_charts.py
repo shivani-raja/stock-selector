@@ -1,0 +1,109 @@
+from raw.format_number import format_number
+from raw.get_sankey_data import get_sankey_data
+import plotly.graph_objects as go
+from dash import dcc, html
+
+config = {"displayModeBar": False}
+
+
+def update_charts(ticker_data, currency, year):
+    # update PnL chart
+    pnl_chart = go.Figure(
+        data=[
+            go.Bar(
+                name="Revenue",
+                x=ticker_data["calendarYear"],
+                y=ticker_data["revenue"],
+                text=[
+                    f"{currency}{format_number(val)}" for val in ticker_data["revenue"]
+                ],
+                marker={"color": "#588AFF"},
+            ),
+            go.Bar(
+                name="Net Income/Loss",
+                x=ticker_data["calendarYear"],
+                y=ticker_data["netIncome"],
+                text=[
+                    f"{currency}{format_number(val)}"
+                    for val in ticker_data["netIncome"]
+                ],
+                marker={"color": ticker_data["color"]},
+            ),
+        ]
+    )
+    pnl_chart.update_layout(
+        barmode="group",
+        yaxis_tickprefix=currency,
+        font_family="Inter",
+        hovermode=False,
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            x=0.5,
+        ),
+        paper_bgcolor="#1A2038",
+        plot_bgcolor="#1A2038",
+        font_color="#FFFFFF",
+    )
+
+    pnl_chart.update_yaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+    pnl_chart.update_xaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+
+    # update sankey chart
+    sankey_data = get_sankey_data(ticker_data)
+    sankey_data = sankey_data[sankey_data["year"] == year]
+
+    sankey_chart = go.Figure(
+        data=[
+            go.Sankey(
+                node=dict(
+                    pad=15,
+                    thickness=15,
+                    line=dict(color="black", width=0.5),
+                    x=sankey_data["x"],
+                    y=sankey_data["y"],
+                    label=sankey_data["label"],
+                ),
+                # Add links
+                link=dict(
+                    source=sankey_data["source"],
+                    target=sankey_data["target"],
+                    value=sankey_data["value"],
+                ),
+            )
+        ]
+    )
+
+    sankey_chart.update_layout(
+        font_family="Inter",
+        hovermode=False,
+        paper_bgcolor="#1A2038",
+        plot_bgcolor="#1A2038",
+        font_color="#FFFFFF",
+    )
+
+    sankey_chart.update_yaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+    sankey_chart.update_xaxes(
+        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+
+    return [
+        html.Div(
+            [
+                html.Div(
+                    dcc.Graph(figure=pnl_chart, config=config), className="pnl-chart"
+                ),
+                html.Div(
+                    dcc.Graph(figure=sankey_chart, config=config),
+                    className="sankey-chart",
+                ),
+            ],
+            className="main-charts-1",
+        )
+    ]
