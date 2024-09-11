@@ -17,7 +17,8 @@ def update_charts(ticker_data, currency, year):
                 text=[
                     f"{currency}{format_number(val)}" for val in ticker_data["revenue"]
                 ],
-                marker={"color": "#588AFF"},
+                textposition="outside",
+                marker={"color": "#588AFF", "line_width": 0},
             ),
             go.Bar(
                 name="Net Income/Loss",
@@ -27,12 +28,14 @@ def update_charts(ticker_data, currency, year):
                     f"{currency}{format_number(val)}"
                     for val in ticker_data["netIncome"]
                 ],
-                marker={"color": ticker_data["color"]},
+                textposition="outside",
+                marker={"color": ticker_data["color"], "line_width": 0},
             ),
         ]
     )
     pnl_chart.update_layout(
         barmode="group",
+        barcornerradius=8,
         yaxis_tickprefix=currency,
         font_family="Inter",
         hovermode=False,
@@ -44,6 +47,7 @@ def update_charts(ticker_data, currency, year):
         paper_bgcolor="#1A2038",
         plot_bgcolor="#1A2038",
         font_color="#FFFFFF",
+        uniformtext_minsize=5,
     )
 
     pnl_chart.update_yaxes(

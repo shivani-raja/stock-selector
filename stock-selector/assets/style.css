@@ -94,12 +94,12 @@ body {
 .pnl-chart, .sankey-chart {
     background-color: var(--chart-background);
     margin: 30px;
-    padding: 30px;
+    padding: 10px;
     border-radius: 15px;
 }
 
 @media (min-width: 768px) {
     .pnl-chart, .sankey-chart {
-        width: calc(50% - 120px);
+        width: calc(50% - 80px);
     }
 }

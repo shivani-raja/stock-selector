@@ -6,10 +6,10 @@ def format_number(n):
     """
 
     if abs(n) >= 1_000_000_000:
-        return f"{n / 1_000_000_000:.1f}B"  # billions
+        return f"{n / 1_000_000_000:.0f}B"  # billions
     elif abs(n) >= 1_000_000:
-        return f"{n / 1_000_000:.1f}M"  # millions
+        return f"{n / 1_000_000:.0f}M"  # millions
     elif abs(n) >= 1_000:
-        return f"{n / 1_000:.1f}K"  # thousands
+        return f"{n / 1_000:.0f}K"  # thousands
     else:
         return str(n)  # smaller numbers

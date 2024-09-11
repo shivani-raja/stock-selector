@@ -31,21 +31,29 @@ def update_kpi_charts(profile_data, price_data):
                         dict(count=6, label="6m", step="month", stepmode="backward"),
                         dict(count=1, label="YTD", step="year", stepmode="todate"),
                         dict(count=1, label="1y", step="year", stepmode="backward"),
-                        dict(step="all"),
+                        dict(label="5y", step="all"),
                     ]
                 )
             ),
             type="date",
         ),
         yaxis_tickprefix=profile_data.currency_symbol,
-        hovermode="x"
+        hovermode="x unified",
+        hoverlabel=dict(
+            font_color="#131526",
+            bordercolor="#131526",
+            bgcolor="#FFFFFF",
+        ),
     )
 
     price_chart.update_yaxes(
         linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
     )
     price_chart.update_xaxes(
-        linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780",rangeselector_bgcolor='#243780',
+        linecolor="#243780",
+        gridcolor="#243780",
+        zerolinecolor="#243780",
+        rangeselector_bgcolor="#243780",
     )
 
     # create KPI charts
@@ -63,7 +71,7 @@ def update_kpi_charts(profile_data, price_data):
                     [
                         html.Img(src=profile_data["image"]),
                         html.H2("Company Overview"),
-                        html.P(profile_data["description"][:1000]),
+                        html.P(f"{profile_data.description[:1000]}..."),
                     ],
                     className="overview-metrics",
                 ),
