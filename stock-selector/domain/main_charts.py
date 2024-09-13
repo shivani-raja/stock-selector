@@ -58,25 +58,28 @@ def update_charts(ticker_data, currency, year):
     )
 
     # update sankey chart
-    sankey_data = get_sankey_data(ticker_data)
-    sankey_data = sankey_data[sankey_data["year"] == year]
+    sankey_nodes, sankey_links = get_sankey_data(ticker_data, currency)
+    sankey_nodes = sankey_nodes[sankey_nodes["year"] == year]
+    sankey_links = sankey_links[sankey_links["year"] == year]
 
     sankey_chart = go.Figure(
         data=[
             go.Sankey(
                 node=dict(
                     pad=15,
-                    thickness=15,
-                    line=dict(color="black", width=0.5),
-                    x=sankey_data["x"],
-                    y=sankey_data["y"],
-                    label=sankey_data["label"],
+                    thickness=10,
+                    x=sankey_nodes['x'],
+                    y=sankey_nodes['y'],
+                    color=sankey_nodes['color'],
+                    label=sankey_nodes['label'],
+
                 ),
                 # Add links
                 link=dict(
-                    source=sankey_data["source"],
-                    target=sankey_data["target"],
-                    value=sankey_data["value"],
+                    source=sankey_links["source"],
+                    target=sankey_links["target"],
+                    value=sankey_links["value"],
+                    color=sankey_links['color'],
                 ),
             )
         ]

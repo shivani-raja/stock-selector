@@ -15,8 +15,9 @@ app = Dash(__name__)
 # define layout
 app.layout = html.Div(
     [
+        html.Div(html.H1('Stock Analysis'), className='app-title'),
         html.Div(
-            dcc.Input(id="ticker", type="text", placeholder="Enter ticker symbol"),
+            dcc.Input(id="ticker", type="text", placeholder="enter ticker..."),
             className="input-ticker",
         ),
         html.Div(id="company-overview"),
@@ -46,7 +47,8 @@ def update_company_overview(ticker):
         # get required data
         profile_data = get_profile_data(ticker)
         price_data = get_price_data(ticker)
-        children = update_kpi_charts(profile_data, price_data)
+        ticker_data = get_market_data(ticker)
+        children = update_kpi_charts(profile_data, price_data, ticker_data)
         return html.Div(children)
 
 

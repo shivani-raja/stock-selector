@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 config = {"displayModeBar": False}
 
 
-def update_kpi_charts(profile_data, price_data):
+def update_kpi_charts(profile_data, price_data, ticker_data):
 
     # create historical share price chart
     price_chart = go.Figure()
@@ -55,6 +55,8 @@ def update_kpi_charts(profile_data, price_data):
         zerolinecolor="#243780",
         rangeselector_bgcolor="#243780",
     )
+    # trim ticker data
+    ticker_data = ticker_data.iloc[ticker_data['calendarYear'].idxmax()]
 
     # create KPI charts
     return [
@@ -109,6 +111,20 @@ def update_kpi_charts(profile_data, price_data):
                 ),
                 html.Div(
                     [
+                        html.P("EPS", className="kpi-header-b"),
+                        html.P(f"{ticker_data.eps}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Diluted EPS", className="kpi-header-a"),
+                        html.P(f"{ticker_data.epsdiluted}", className="kpi-value"),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
                         html.P("IPO Date", className="kpi-header-b"),
                         html.P(
                             f"{datetime.strptime(profile_data.ipoDate,'%Y-%m-%d').strftime('%d/%m/%Y')}",
@@ -119,28 +135,28 @@ def update_kpi_charts(profile_data, price_data):
                 ),
                 html.Div(
                     [
-                        html.P("Sector", className="kpi-header-b"),
+                        html.P("Sector", className="kpi-header-a"),
                         html.P(f"{profile_data.sector}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
                 html.Div(
                     [
-                        html.P("CEO", className="kpi-header-a"),
+                        html.P("CEO", className="kpi-header-b"),
                         html.P(f"{profile_data.ceo}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
                 html.Div(
                     [
-                        html.P("Country", className="kpi-header-b"),
+                        html.P("Country", className="kpi-header-a"),
                         html.P(f"{profile_data.country}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
                 html.Div(
                     [
-                        html.P("Exchange", className="kpi-header-a"),
+                        html.P("Exchange", className="kpi-header-b"),
                         html.P(
                             f"{profile_data.exchangeShortName}", className="kpi-value"
                         ),
