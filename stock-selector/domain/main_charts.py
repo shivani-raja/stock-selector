@@ -5,6 +5,28 @@ from dash import dcc, html
 
 config = {"displayModeBar": False}
 
+chart_layout = {
+    "paper_bgcolor": "#1A2038",
+    "plot_bgcolor": "#1A2038",
+    "font_family": "Inter",
+    "font_color": "#FFFFFF",
+    "xaxis": {
+        "linecolor": "#243780",
+        "gridcolor": "#243780",
+        "zerolinecolor": "#243780",
+    },
+    "yaxis": {
+        "linecolor": "#243780",
+        "gridcolor": "#243780",
+        "zerolinecolor": "#243780",
+    },
+    "legend": {
+        "orientation": "h",
+        "yanchor": "top",
+        "x": 0.25,
+    },
+}
+
 
 def update_charts(ticker_data, currency, year):
     # update PnL chart
@@ -34,20 +56,12 @@ def update_charts(ticker_data, currency, year):
         ]
     )
     pnl_chart.update_layout(
+        title=dict(text="5y Performance", x=0.5, xanchor="center"),
         barmode="group",
         barcornerradius=8,
         yaxis_tickprefix=currency,
-        font_family="Inter",
+        **chart_layout,
         hovermode=False,
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            x=0.5,
-        ),
-        paper_bgcolor="#1A2038",
-        plot_bgcolor="#1A2038",
-        font_color="#FFFFFF",
-        uniformtext_minsize=5,
     )
 
     pnl_chart.update_yaxes(
@@ -68,29 +82,26 @@ def update_charts(ticker_data, currency, year):
                 node=dict(
                     pad=15,
                     thickness=10,
-                    x=sankey_nodes['x'],
-                    y=sankey_nodes['y'],
-                    color=sankey_nodes['color'],
-                    label=sankey_nodes['label'],
-
+                    x=sankey_nodes["x"],
+                    y=sankey_nodes["y"],
+                    color=sankey_nodes["color"],
+                    label=sankey_nodes["label"],
                 ),
                 # Add links
                 link=dict(
                     source=sankey_links["source"],
                     target=sankey_links["target"],
                     value=sankey_links["value"],
-                    color=sankey_links['color'],
+                    color=sankey_links["color"],
                 ),
             )
         ]
     )
 
     sankey_chart.update_layout(
-        font_family="Inter",
+        title=dict(text=f"Sankey {year}", x=0.5, xanchor="center"),
+        **chart_layout,
         hovermode=False,
-        paper_bgcolor="#1A2038",
-        plot_bgcolor="#1A2038",
-        font_color="#FFFFFF",
     )
 
     sankey_chart.update_yaxes(
@@ -98,6 +109,51 @@ def update_charts(ticker_data, currency, year):
     )
     sankey_chart.update_xaxes(
         linecolor="#243780", gridcolor="#243780", zerolinecolor="#243780"
+    )
+
+    # update ratio chart
+    ratio_chart = go.Figure(
+        go.Scatter(
+            x=ticker_data["calendarYear"],
+            y=ticker_data["grossProfitRatio"],
+            mode="lines+markers",
+            line=dict(color="#FF3B4C", width=2),
+            name="Gross Profit Margin",
+            hovertemplate="%{y:.2f}%",
+        )
+    )
+    ratio_chart.add_trace(
+        go.Scatter(
+            x=ticker_data["calendarYear"],
+            y=ticker_data["operatingIncomeRatio"],
+            mode="lines+markers",
+            line=dict(color="#FF7C58", width=2),
+            name="Operating Profit Margin",
+            hovertemplate="%{y:.2f}%",
+        )
+    )
+    ratio_chart.add_trace(
+        go.Scatter(
+            x=ticker_data["calendarYear"],
+            y=ticker_data["netIncomeRatio"],
+            mode="lines+markers",
+            line=dict(color="#FF72D9", width=2),
+            name="Net Profit Margin",
+            hovertemplate="%{y:.2f}%",
+        )
+    )
+
+    ratio_chart.update_layout(
+        title=dict(text=f"Margins over 5y", x=0.5, xanchor="center"),
+        **chart_layout,
+        hovermode="x unified",
+        hoverlabel=dict(
+            font_color="#131526",
+            bordercolor="#131526",
+            bgcolor="#FFFFFF",
+        ),
+        yaxis_ticksuffix="%",
+        yaxis_tickformat=".2f",
     )
 
     return [
@@ -109,6 +165,10 @@ def update_charts(ticker_data, currency, year):
                 html.Div(
                     dcc.Graph(figure=sankey_chart, config=config),
                     className="sankey-chart",
+                ),
+                html.Div(
+                    dcc.Graph(figure=ratio_chart, config=config),
+                    className="ratio-chart",
                 ),
             ],
             className="main-charts-1",

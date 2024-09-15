@@ -113,7 +113,7 @@ text-align: center;
     flex-wrap: wrap;
 }
 
-.pnl-chart, .sankey-chart {
+.pnl-chart, .sankey-chart, .ratio-chart {
     background-color: var(--chart-background);
     margin: 30px;
     padding: 10px;
@@ -121,7 +121,7 @@ text-align: center;
 }
 
 @media (min-width: 768px) {
-    .pnl-chart, .sankey-chart {
+    .pnl-chart, .sankey-chart, .ratio-chart {
         width: calc(50% - 80px);
     }
 }
