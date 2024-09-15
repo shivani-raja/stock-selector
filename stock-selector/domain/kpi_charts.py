@@ -9,15 +9,20 @@ config = {"displayModeBar": False}
 def update_kpi_charts(profile_data, price_data, ticker_data):
 
     # create historical share price chart
-    price_chart = go.Figure()
-    price_chart.add_trace(
-        go.Scatter(
+    price_chart = go.Figure(
+        go.Candlestick(
             x=price_data["date"],
-            y=price_data["adjClose"],
-            mode="lines",
-            line=dict(color="#4BDB95"),
+            open=price_data["open"],
+            close=price_data["close"],
+            high=price_data["high"],
+            low=price_data["low"],
         )
     )
+    price_chart.update_traces(
+        increasing_line_color="#4BDB95",
+        decreasing_line_color="#FF3B4C",
+    )
+
     price_chart.update_layout(
         paper_bgcolor="#1A2038",
         plot_bgcolor="#1A2038",
@@ -37,6 +42,7 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
             ),
             type="date",
         ),
+        xaxis_rangeslider_visible=False,
         yaxis_tickprefix=profile_data.currency_symbol,
         hovermode="x unified",
         hoverlabel=dict(
@@ -56,7 +62,7 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
         rangeselector_bgcolor="#243780",
     )
     # trim ticker data
-    ticker_data = ticker_data.iloc[ticker_data['calendarYear'].idxmax()]
+    ticker_data = ticker_data.iloc[ticker_data["calendarYear"].idxmax()]
 
     # create KPI charts
     return [
@@ -94,7 +100,17 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
                 ),
                 html.Div(
                     [
-                        html.P("Market Cap", className="kpi-header-b"),
+                        html.P("DCF", className="kpi-header-b"),
+                        html.P(
+                            f"{profile_data.currency_symbol}{profile_data.dcf:.2f}",
+                            className="kpi-value",
+                        ),
+                    ],
+                    className="kpi-child",
+                ),
+                html.Div(
+                    [
+                        html.P("Market Cap", className="kpi-header-a"),
                         html.P(
                             f"{profile_data.currency_symbol}{format_number(profile_data.mktCap)}",
                             className="kpi-value",
@@ -104,22 +120,15 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
                 ),
                 html.Div(
                     [
-                        html.P("Beta", className="kpi-header-a"),
+                        html.P("Beta", className="kpi-header-b"),
                         html.P(f"{profile_data.beta}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
                 html.Div(
                     [
-                        html.P("EPS", className="kpi-header-b"),
+                        html.P("EPS", className="kpi-header-a"),
                         html.P(f"{ticker_data.eps}", className="kpi-value"),
-                    ],
-                    className="kpi-child",
-                ),
-                html.Div(
-                    [
-                        html.P("Diluted EPS", className="kpi-header-a"),
-                        html.P(f"{ticker_data.epsdiluted}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
@@ -142,15 +151,15 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
                 ),
                 html.Div(
                     [
-                        html.P("CEO", className="kpi-header-b"),
-                        html.P(f"{profile_data.ceo}", className="kpi-value"),
+                        html.P("Country", className="kpi-header-b"),
+                        html.P(f"{profile_data.country}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
                 html.Div(
                     [
-                        html.P("Country", className="kpi-header-a"),
-                        html.P(f"{profile_data.country}", className="kpi-value"),
+                        html.P("CEO", className="kpi-header-a),
+                        html.P(f"{profile_data.ceo}", className="kpi-value"),
                     ],
                     className="kpi-child",
                 ),
