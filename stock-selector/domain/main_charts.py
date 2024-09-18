@@ -156,6 +156,10 @@ def update_charts(ticker_data, currency, year):
         yaxis_tickformat=".2f",
     )
 
+    ratio_chart.update_xaxes(
+        spikecolor="#FFFFFF",
+    )
+
     return [
         html.Div(
             [

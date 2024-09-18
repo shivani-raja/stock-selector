@@ -5,7 +5,9 @@ def format_number(n):
     :return: formatted number
     """
 
-    if abs(n) >= 1_000_000_000:
+    if abs(n) >= 1_000_000_000_000:
+        return f"{n / 1_000_000_000_000:.1f}T"  # trillions
+    elif abs(n) >= 1_000_000_000:
         return f"{n / 1_000_000_000:.0f}B"  # billions
     elif abs(n) >= 1_000_000:
         return f"{n / 1_000_000:.0f}M"  # millions

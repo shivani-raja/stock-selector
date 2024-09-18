@@ -43,7 +43,7 @@ text-align: center;
 
 /* styling for company overview */
 
-.company-overview {
+.company-overview, .cashflow-chart {
     color: var(--white);
     margin: 30px;
     background-color: var(--chart-background);

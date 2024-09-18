@@ -60,6 +60,7 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
         gridcolor="#243780",
         zerolinecolor="#243780",
         rangeselector_bgcolor="#243780",
+        spikecolor="#FFFFFF",
     )
     # trim ticker data
     ticker_data = ticker_data.iloc[ticker_data["calendarYear"].idxmax()]
@@ -158,7 +159,7 @@ def update_kpi_charts(profile_data, price_data, ticker_data):
                 ),
                 html.Div(
                     [
-                        html.P("CEO", className="kpi-header-a),
+                        html.P("CEO", className="kpi-header-a"),
                         html.P(f"{profile_data.ceo}", className="kpi-value"),
                     ],
                     className="kpi-child",
