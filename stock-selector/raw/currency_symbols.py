@@ -1,5 +1,5 @@
 
-def get_currency_symbols():
+def get_currency_symbol(currency):
 
     # define a currency symbols dictionary
     currency_symbols = {
@@ -25,4 +25,4 @@ def get_currency_symbols():
         "DKK": "kr",  # Danish Krone
     }
 
-    return currency_symbols
+    return currency_symbols.get(currency)

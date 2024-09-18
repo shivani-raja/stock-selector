@@ -1,109 +1,171 @@
 :root {
-  --background: #131526;
-  --chart-background: #1A2038;
+  --black: #101827;
+  --chart-background-dark: #1C2432;
+  --chart-background-light: #C6D0DB;
+  --chart_line_dark: #3E5275;
+  --chart_line_light: #D2DBE7;
   --green: #4BDB95;
   --pink: #FF72D9;
-  --blue: #588AFF;
+  --purple: #588AFF;
   --red: #FF3B4C;
   --orange: #FF7C58;
   --white: #FFFFFF;
 }
 
+/* general styling */
+
 body {
     font-family: 'inter';
-    background-color: var(--background) !important
+    margin: 0px;
+}
+
+.light {
+    background-color: var(--white) !important;
+    color: var(--black);
+    padding: 40px;
+}
+
+.dark {
+    background-color: var(--black) !important;
+    color: var(--white);
+    padding: 40px;
 }
 
 h1, h2 {
-font-weight: 300;
+font-weight: 600;
+font-size: 30px;
+margin: 10px 0px;
 }
 
-/* intro + input styling */
-.input-ticker {
-text-align: center;
-margin-bottom: 20px;
+/* intro + input button styling */
+.search-box {
 font-size: 20px;
+border-width: 2.5px;
+border-style: solid;
+border-image: linear-gradient(to right, var(--pink), var(--purple)) 1;
+width: 240px;
+margin: 30px 0px 10px 0px;
 }
 
-input.dash-input:valid {
+button {
+font-size: 25px !important;
+background-color: var(--white) !important;
+border: none !important;
+margin: 0px 6px;
+}
+
+button:hover {
+color: var(--purple);
+}
+
+input.dash-input:valid, input.dash-input-internal-autofill-selected {
     font-size: 18px;
-    background-color: var(--background);
-    color: var(--white);
+    background-color: var(--white) !important;
+    color: var(--chart-background-dark);
     border: none;
-    border-bottom: 2px var(--white) solid;
-    text-align: center;
+    margin: 8px 4px;
 }
 
-.app-title h1 {
-color: var(--white);
-font-weight: 300;
-text-align: center;
-}
+/* chart styling */
 
+.dark .dash-graph, .dark .kpi-chart {
+    border-radius: 15px;
+    background-color: var(--chart-background-dark);
+    margin: 20px;
+    padding: 20px;
+}
 
 /* styling for company overview */
 
-.company-overview, .cashflow-chart {
-    color: var(--white);
-    margin: 30px;
-    background-color: var(--chart-background);
-    padding: 30px;
-    border-radius: 15px;
-    display:flex;
-    flex-wrap:wrap;
+.company-overview-intro {
+    position: relative;
+    padding: 20px;
 }
 
-.company-overview > * {
-    width:100%;
+.company-overview-intro img {
+    width: 60px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
-.company-overview img {
-    width: 100px;
+.company-overview-charts {
+    display: flex;
 }
 
-@media (min-width:768px) {
-    .overview-metrics {
-        width:calc(100% / 3);
+.price-chart {
+    width:calc(65% - 30px);
+}
+
+@media screen and (max-width:768px) {
+
+    .company-overview-charts {
+        display: block;
     }
-    .overview-chart {
-        width:calc(100% / 3 * 2);
+
+   .price-chart, .kpi-chart {
+    width: 100%;
+    margin-bottom: 20px;
     }
 }
 
 /* styling for kpi charts */
 
-.kpi-charts {
-    display: grid;
-    grid-template-columns: repeat(5,1fr);
-    text-align: center;
-    margin: 30px;
-    background-color: var(--chart-background);
-    padding: 30px;
-    border-radius: 15px;
-}
-
-@media (max-width: 768px) {
-    .kpi-charts {
-        grid-template-columns: repeat(2,1fr) !important;
-    }
-}
-
-.kpi-header-a, .kpi-header-b {
-    font-size: 20px;
+.kpi-header {
+    font-size: 18px;
     font-weight: 300;
     margin: 10px;
 }
 
-.kpi-header-a {
+.kpi-header:nth-child(odd) {
+    color: var(--orange);
+}/* styling for kpi charts */
+
+.kpi-chart {
+    width:calc(35% - 30px);
+}
+
+.kpi-charts {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    text-align: center;
+    place-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.kpi-header {
+    font-size: 18px;
+    font-weight: 300;
+    margin: 10px;
+}
+
+.kpi-child:nth-child(1) .kpi-header,
+.kpi-child:nth-child(4) .kpi-header,
+.kpi-child:nth-child(5) .kpi-header {
     color: var(--orange);
 }
 
-.kpi-header-b {
+.kpi-child:nth-child(2) .kpi-header,
+.kpi-child:nth-child(3) .kpi-header,
+.kpi-child:nth-child(6) .kpi-header {
     color: var(--pink);
 }
 
 .kpi-value {
-    font-size: 35px;
+    font-size: 25px;
+    font-weight: 450;
+    margin: 2px;
+    color: var(--white);
+    margin: 0px 0px 20px;
+}
+
+.kpi-header:nth-child(even) {
+    color: var(--pink);
+}
+
+.kpi-value {
+    font-size: 25px;
     font-weight: 450;
     margin: 2px;
     color: var(--white);

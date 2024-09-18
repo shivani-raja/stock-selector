@@ -5,19 +5,19 @@ from raw.format_number import format_number
 config = {"displayModeBar": False}
 
 chart_layout = {
-    "paper_bgcolor": "#1A2038",
-    "plot_bgcolor": "#1A2038",
+    "paper_bgcolor": "#1C2432",
+    "plot_bgcolor": "#1C2432",
     "font_family": "Inter",
     "font_color": "#FFFFFF",
     "xaxis": {
-        "linecolor": "#243780",
-        "gridcolor": "#243780",
-        "zerolinecolor": "#243780",
+        "linecolor": "#3E5275",
+        "gridcolor": "#3E5275",
+        "zerolinecolor": "#3E5275",
     },
     "yaxis": {
-        "linecolor": "#243780",
-        "gridcolor": "#243780",
-        "zerolinecolor": "#243780",
+        "linecolor": "#3E5275",
+        "gridcolor": "#3E5275",
+        "zerolinecolor": "#3E5275",
     },
     "legend": {
         "orientation": "h",
