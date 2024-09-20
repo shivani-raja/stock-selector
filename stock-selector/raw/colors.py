@@ -4,7 +4,7 @@ def get_color(color):
     color_dict = {
         "black": "#101827",
         "chart_background_dark": "#1C2432",
-        "chart_background_light": "#C6D0DB",
+        "chart_background_light": "#EDF2F8",
         "transparent": "rgba(0,0,0,0)",
         "chart_line_dark": "#3E5275",
         "chart_line_light": "#D2DBE7",

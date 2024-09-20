@@ -1,6 +1,8 @@
 import requests
+import json
 import pandas as pd
 from raw.currency_symbols import get_currency_symbol
+from raw.get_sankey_data import get_sankey_data
 
 
 def get_ticker_data(ticker):
@@ -59,9 +61,18 @@ def get_ticker_data(ticker):
                     df["currency_symbol"] = get_currency_symbol(currency)
 
             # append to output
-            output_data[table] = df.to_json(orient='split')
+            output_data[table] = df.to_json(orient="split")
 
         else:
             print(f"failed to fetch {table} for {ticker}: {response.status_code}")
+
+    # get sankey data + append
+    income_statement_data = pd.read_json(
+        output_data["income_statement_data"], orient="split"
+    )
+    sankey_nodes, sankey_links = get_sankey_data(income_statement_data)
+
+    output_data["sankey_nodes"] = sankey_nodes.to_json(orient="split")
+    output_data["sankey_links"] = sankey_links.to_json(orient="split")
 
     return output_data

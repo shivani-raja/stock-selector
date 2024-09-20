@@ -1,7 +1,7 @@
 :root {
   --black: #101827;
   --chart-background-dark: #1C2432;
-  --chart-background-light: #C6D0DB;
+  --chart-background-light: #F2F6FC;
   --chart_line_dark: #3E5275;
   --chart_line_light: #D2DBE7;
   --green: #4BDB95;
@@ -22,7 +22,7 @@ body {
 .light {
     background-color: var(--white) !important;
     color: var(--black);
-    padding: 40px;
+    padding: 30px 30px 30px 60px;
 }
 
 .dark {
@@ -31,7 +31,13 @@ body {
     padding: 40px;
 }
 
-h1, h2 {
+h1 {
+font-weight: 600;
+font-size: 37px;
+margin: 10px 0px;
+}
+
+h2 {
 font-weight: 600;
 font-size: 30px;
 margin: 10px 0px;
@@ -73,6 +79,13 @@ input.dash-input:valid, input.dash-input-internal-autofill-selected {
     background-color: var(--chart-background-dark);
     margin: 20px;
     padding: 20px;
+}
+
+.light .dash-graph {
+    border-radius: 15px;
+    background-color: var(--chart-background-light);
+    margin: 40px;
+    padding: 40px;
 }
 
 /* styling for company overview */
@@ -172,22 +185,96 @@ input.dash-input:valid, input.dash-input-internal-autofill-selected {
     margin: 0px 0px 20px;
 }
 
-/* styling for main charts row 1 */
-.main-charts-1 {
-    color: var(--white);
+/* styling for latest performance charts */
+.latest-performance-charts {
     display: flex;
-    flex-wrap: wrap;
 }
 
-.pnl-chart, .sankey-chart, .ratio-chart {
-    background-color: var(--chart-background);
-    margin: 30px;
-    padding: 10px;
-    border-radius: 15px;
+.sankey-chart, .cashflow-chart {
+    width:50%;
 }
 
-@media (min-width: 768px) {
-    .pnl-chart, .sankey-chart, .ratio-chart {
-        width: calc(50% - 80px);
+@media screen and (max-width:768px) {
+
+    .latest-performance-charts {
+        display: block;
+    }
+
+    .sankey-chart, .cashflow-chart {
+    width: 100%;
+    margin-bottom: 20px;
+    }
+}
+
+/* latest performance intro */
+
+.latest-performance-intro {
+  display: flex;
+}
+
+.latest-performance-title {
+    width:60%;
+}
+
+.year-slider-container {
+    width: 350px;
+    margin-top: 20px;
+}
+
+@media screen and (max-width:768px) {
+
+    .latest-performance-intro {
+        display: block;
+    }
+
+    .latest-performance-title, .year-slider-container {
+    width: 100%;
+    margin-bottom: 20px;
+    }
+}
+
+/* slider styling */
+
+.rc-slider-handle, .rc-slider-handle:hover, .rc-slider-handle:active,
+.rc-slider-handle-click-focused:focus, .rc-slider-click-handle-focused {
+    border: 2px solid var(--pink);
+    background-color: var(--pink);
+    border-color: var(--pink);
+    box-shadow: none !important;
+}
+
+.rc-slider-dot-active {
+    background: var(--purple);
+    border-color: var(--purple);
+    border-width: 4px;
+    box-shadow: none !important;
+}
+
+.rc-slider-track {
+    background: linear-gradient(to right, var(--purple), var(--pink));
+}
+
+.rc-slider-mark-text-active {
+    color: var(--black);
+}
+
+/* styling for yearly performance charts */
+.yearly-performance-charts {
+    display: flex;
+}
+
+.ratio-chart, .pnl-chart {
+    width:50%;
+}
+
+@media screen and (max-width:768px) {
+
+    .yearly-performance-charts {
+        display: block;
+    }
+
+   .ratio-chart, .pnl-chart {
+    width: 100%;
+    margin-bottom: 20px;
     }
 }

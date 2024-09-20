@@ -4,6 +4,7 @@ def format_number(n):
 
     :return: formatted number
     """
+    n = int(n)
 
     if abs(n) >= 1_000_000_000_000:
         return f"{n / 1_000_000_000_000:.1f}T"  # trillions

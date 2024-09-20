@@ -37,11 +37,7 @@ def get_layout(palette):
             "yanchor": "top",
             "x": 0.25,
         },
-        "margin": {
-            "l":50,
-            "r":50,
-            "t":50,
-            "b":50},
+        "margin": {"l": 50, "r": 50, "t": 50, "b": 50},
     }
 
     return chart_layout

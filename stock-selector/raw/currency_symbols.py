@@ -1,4 +1,3 @@
-
 def get_currency_symbol(currency):
 
     # define a currency symbols dictionary

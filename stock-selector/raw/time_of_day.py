@@ -1,10 +1,11 @@
 from datetime import datetime
 
+
 def time_of_day():
     # get current hour
     current_hour = datetime.now().hour
 
-    #return greeting
+    # return greeting
     if 5 <= current_hour < 12:
         return "Good morning ☼"
     elif 12 <= current_hour < 17:

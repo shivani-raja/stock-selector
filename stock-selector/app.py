@@ -1,11 +1,13 @@
 from os import times
 
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, dcc, Input, Output, callback_context
 from raw.get_ticker_data import get_ticker_data
 from raw.time_of_day import time_of_day
 from domain.company_overview import update_company_overview_charts
-from domain.main_charts import update_charts
-from domain.cashflow_charts import update_cashflow_charts
+from domain.yearly_performance_charts import update_yearly_performance_charts
+from domain.latest_performance_charts import update_latest_performance_charts
+
+# from domain.cashflow_charts import update_cashflow_charts
 import pandas as pd
 
 
@@ -41,19 +43,28 @@ app.layout = html.Div(
         ),
         # company overview
         html.Div(id="company-overview"),
-        # 5y performance
-        html.Div(
-            id="5y-performance", className="light"
-        ),  # todo: move these to the corresponding scripts,
         # latest performance
-        html.Div(id="latest-performance", className="dark"),
+        html.Div(
+            [
+                html.Div(
+                    [
+                        html.Div(id="latest-performance-title", className="latest-performance-title"),
+                        html.Div(id="year-slider-container", className="year-slider-container"),
+                    ],
+                    className="latest-performance-intro",
+                ),
+                html.Div(id="latest-performance"),
+            ],
+            className="light",
+        ),
+        # 5y performance
+        html.Div(id="yearly-performance"),
         # beta analysis
-        html.Div(id="beta-analysis", className="light"),
+        html.Div(id="beta-analysis"),
     ]
 )
 
 
-# get API data
 @app.callback(
     Output("store-data", "data"),
     Input("search-button", "n_clicks"),
@@ -66,9 +77,28 @@ def get_all_data(n_clicks, ticker):
         else:
             # get required data
             data = get_ticker_data(ticker)
+
     else:
         data = []
     return data
+
+
+@app.callback(
+    Output("year-slider-container", "children"),
+    Input("store-data", "data"),
+)
+def update_slider(data):
+    if data:
+        return dcc.Slider(
+            min=2019,
+            max=2023,
+            step=1,
+            value=2023,
+            marks={year: str(year) for year in range(2019, 2024)},
+            id="year-slider",
+        )
+    else:
+        return []
 
 
 # update company overview
@@ -84,6 +114,46 @@ def update_company_overview(data):
 
     children = update_company_overview_charts(profile_data, price_data)
     return html.Div(children)
+
+
+# update 5y performance
+@app.callback(
+    Output("yearly-performance", "children"),
+    Input("store-data", "data"),
+)
+def update_yearly_performance(data):
+
+    # get data
+    income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
+    price_data = pd.read_json(data["price_data"], orient="split")
+
+    children = update_yearly_performance_charts(income_statement_data, price_data)
+    return html.Div(children)
+
+
+# update latest performance
+@app.callback(
+    [
+        Output("latest-performance", "children"),
+        Output("latest-performance-title", "children"),
+    ],
+    Input("store-data", "data"),
+    Input("year-slider", "value"),
+)
+def update_latest_performance(data, year):
+    triggered = callback_context.triggered
+    if triggered and "year-slider" in triggered[0]["prop_id"]:
+        # get data
+        sankey_nodes = pd.read_json(data["sankey_nodes"], orient="split")
+        sankey_links = pd.read_json(data["sankey_links"], orient="split")
+        cashflow_data = pd.read_json(data["cashflow_data"], orient="split")
+
+        children = update_latest_performance_charts(
+            sankey_nodes, sankey_links, cashflow_data, year
+        )
+        return html.Div(children), html.H2(f"Latest Performance: {year}")
+    else:
+        return [], []
 
 
 # Run the Dash app
