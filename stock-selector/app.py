@@ -18,7 +18,8 @@ config = {"displayModeBar": False}
 
 # initialise app
 app = Dash(__name__)
-app.title = 'Stock Analysis'
+app.title = "Stock Analysis"
+server = app.server
 
 # get greeting
 greeting = time_of_day()
@@ -124,6 +125,7 @@ def update_company_overview(data):
     children = update_company_overview_charts(profile_data, price_data)
     return html.Div(children)
 
+
 # update latest performance
 @app.callback(
     [
@@ -148,6 +150,7 @@ def update_latest_performance(data, year):
     else:
         return [], []
 
+
 # update 5y performance
 @app.callback(
     Output("yearly-performance", "children"),
@@ -161,6 +164,7 @@ def update_yearly_performance(data):
 
     children = update_yearly_performance_charts(income_statement_data, price_data)
     return html.Div(children)
+
 
 # update beta analysis
 @app.callback(
