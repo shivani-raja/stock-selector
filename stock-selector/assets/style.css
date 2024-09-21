@@ -1,252 +1,269 @@
 :root {
   --black: #101827;
-  --chart-background-dark: #1C2432;
-  --chart-background-light: #F2F6FC;
-  --chart_line_dark: #3E5275;
-  --chart_line_light: #D2DBE7;
-  --green: #4BDB95;
-  --pink: #FF72D9;
-  --purple: #588AFF;
-  --red: #FF3B4C;
-  --orange: #FF7C58;
-  --white: #FFFFFF;
+  --chart-background-dark: #1c2432;
+  --chart-background-light: #f2f6fc;
+  --chart_line_dark: #3e5275;
+  --chart_line_light: #d2dbe7;
+  --green: #4bdb95;
+  --pink: #ff72d9;
+  --purple: #588aff;
+  --red: #ff3b4c;
+  --orange: #ff7c58;
+  --white: #ffffff;
 }
 
 /* general styling */
 
 body {
-    font-family: 'inter';
-    margin: 0px;
+  font-family: "inter";
+  margin: 0px;
 }
 
 .light {
-    background-color: var(--white) !important;
-    color: var(--black);
-    padding: 40px;
+  background-color: var(--white) !important;
+  color: var(--black);
+  padding: 40px;
 }
 
 .dark {
-    background-color: var(--black) !important;
-    color: var(--white);
-    padding: 40px;
+  background-color: var(--black) !important;
+  color: var(--white);
+  padding: 40px;
 }
 
-h1, h2, h3 {
-font-weight: 600;
-margin: 10px 0px;
-padding-left: 20px;
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  margin: 10px 0px;
+  padding-left: 20px;
 }
 
 p {
-    padding-left: 20px;
+  padding-left: 20px;
 }
 
-@media screen and (max-width:768px) {
-    h1, h2, h3, p {
-        padding-left: 0px;
-    }
+@media screen and (max-width: 768px) {
+  h1,
+  h2,
+  h3,
+  p {
+    padding-left: 0px;
+  }
 
-    .search-box {
-        margin-left: 0px !important;
-    }
+  .search-box {
+    margin-left: 0px !important;
+  }
 }
 
 h1 {
-font-size: 37px;
+  font-size: 37px;
 }
 
 h2 {
-font-size: 30px;
+  font-size: 30px;
 }
 
 h3 {
-font-size: 20px;
-font-weight: 500;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /* intro + input button styling */
 .search-box {
-font-size: 20px;
-border-width: 2.5px;
-border-style: solid;
-border-image: linear-gradient(to right, var(--pink), var(--purple)) 1;
-width: 240px;
-margin: 30px 0px 10px 20px;
+  font-size: 20px;
+  border-width: 2.5px;
+  border-style: solid;
+  border-image: linear-gradient(to right, var(--pink), var(--purple)) 1;
+  width: 240px;
+  margin: 30px 0px 10px 20px;
 }
 
 button {
-font-size: 25px !important;
-background-color: var(--white) !important;
-border: none !important;
-margin: 0px 6px;
+  font-size: 25px !important;
+  background-color: var(--white) !important;
+  border: none !important;
+  margin: 0px 6px;
 }
 
 button:hover {
-color: var(--purple);
+  color: var(--purple);
 }
 
-input.dash-input:valid, input.dash-input-internal-autofill-selected {
-    font-size: 18px;
-    background-color: var(--white) !important;
-    color: var(--chart-background-dark);
-    border: none;
-    margin: 8px 4px;
+input.dash-input:valid,
+input.dash-input-internal-autofill-selected {
+  font-size: 18px;
+  background-color: var(--white) !important;
+  color: var(--chart-background-dark);
+  border: none;
+  margin: 8px 4px;
 }
 
 /* chart styling */
 
-.dark .dash-graph, .dark .kpi-chart {
-    border-radius: 15px;
-    background-color: var(--chart-background-dark);
-    margin: 20px;
-    padding: 20px;
+.dark .dash-graph,
+.dark .kpi-chart {
+  border-radius: 15px;
+  background-color: var(--chart-background-dark);
+  margin: 20px;
+  padding: 20px;
 }
 
-.light .dash-graph, .light .beta-kpi-chart {
-    border-radius: 15px;
-    background-color: var(--chart-background-light);
-    margin: 20px;
-    padding: 20px;
+.light .dash-graph,
+.light .beta-kpi-chart {
+  border-radius: 15px;
+  background-color: var(--chart-background-light);
+  margin: 20px;
+  padding: 20px;
 }
 
-@media screen and (max-width:768px) {
-    .dark .dash-graph, .dark .kpi-chart, .light .dash-graph {
+@media screen and (max-width: 768px) {
+  .dark .dash-graph,
+  .dark .kpi-chart,
+  .light .dash-graph {
     margin: 0px;
     padding: 0px;
-    }
+  }
 }
 
 /* styling for company overview */
 
 .company-overview-intro {
-    position: relative;
-    padding-right: 40px;
+  position: relative;
+  padding-right: 40px;
 }
 
 .company-overview-intro img {
-    width: 60px;
-    position: absolute;
-    top: 0px;
-    right: 0px;
+  width: 60px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 
 .company-overview-charts {
-    display: flex;
+  display: flex;
 }
 
 .price-chart {
-    width:calc(65% - 30px);
+  width: calc(65% - 30px);
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .company-overview-charts {
+    display: block;
+  }
 
-    .company-overview-charts {
-        display: block;
-    }
-
-   .price-chart, .kpi-chart {
+  .price-chart,
+  .kpi-chart {
     width: 100%;
     margin-bottom: 20px;
-    }
+  }
 }
 
 /* styling for kpi charts */
 
 .kpi-chart {
-    width: calc(35% - 30px);
+  width: calc(35% - 30px);
 }
 
 .kpi-charts {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    text-align: center;
-    place-items: center;
-    justify-content: center;
-    height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  text-align: center;
+  place-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .beta-kpis {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    text-align: center;
-    place-items: center;
-    justify-content: center;
-    height: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  text-align: center;
+  place-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-.kpi-header, .alpha-header {
-    font-size: 18px;
-    font-weight: 300;
-    margin: 10px;
+.kpi-header,
+.alpha-header {
+  font-size: 18px;
+  font-weight: 300;
+  margin: 10px;
 }
 
 .kpi-value {
-    font-size: 25px;
-    font-weight: 450;
-    margin: 0px 0px 20px;
+  font-size: 25px;
+  font-weight: 450;
+  margin: 0px 0px 20px;
 }
 
 .kpi-child:nth-child(1) .kpi-header,
 .kpi-child:nth-child(4) .kpi-header,
-.kpi-child:nth-child(5) .kpi-header, .alpha-header {
-    color: var(--orange);
+.kpi-child:nth-child(5) .kpi-header,
+.alpha-header {
+  color: var(--orange);
 }
 
 .kpi-child:nth-child(2) .kpi-header,
 .kpi-child:nth-child(3) .kpi-header,
 .kpi-child:nth-child(6) .kpi-header {
-    color: var(--pink);
+  color: var(--pink);
 }
 
 /* kpi responsiveness */
 
 @media screen and (max-width: 768px) {
-    .company-overview-charts, .beta-kpi-chart {
-        display: block;
-    }
+  .company-overview-charts,
+  .beta-kpi-chart {
+    display: block;
+  }
 
-    .price-chart, .kpi-chart {
-        width: 100%;
-        margin-bottom: 20px;
-    }
+  .price-chart,
+  .kpi-chart {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 
-    .kpi-charts, beta-kpi-chart {
-        display: grid;
-        grid-template-columns: 1fr; /* Single column layout */
-    }
+  .kpi-charts,
+  beta-kpi-chart {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+  }
 
-    .kpi-header, .alpha-header {
-        font-size: 16px; /* Reduced font size for mobile */
-    }
+  .kpi-header,
+  .alpha-header {
+    font-size: 16px; /* Reduced font size for mobile */
+  }
 
-    .kpi-value {
-        font-size: 20px; /* Reduced font size for mobile */
-    }
+  .kpi-value {
+    font-size: 20px; /* Reduced font size for mobile */
+  }
 
-    .kpi-child {
-        margin-bottom: 10px;
-    }
+  .kpi-child {
+    margin-bottom: 10px;
+  }
 }
 
 /* styling for latest performance charts */
 .latest-performance-charts {
-    display: flex;
+  display: flex;
 }
 
-.sankey-chart, .cashflow-chart {
-    width:50%;
+.sankey-chart,
+.cashflow-chart {
+  width: 50%;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .latest-performance-charts {
+    display: block;
+  }
 
-    .latest-performance-charts {
-        display: block;
-    }
-
-    .sankey-chart, .cashflow-chart {
+  .sankey-chart,
+  .cashflow-chart {
     width: 100%;
     margin-bottom: 20px;
-    }
+  }
 }
 
 /* latest performance intro */
@@ -256,96 +273,101 @@ input.dash-input:valid, input.dash-input-internal-autofill-selected {
 }
 
 .latest-performance-title {
-    width:60%;
+  width: 60%;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .latest-performance-intro {
+    display: block;
+  }
 
-    .latest-performance-intro {
-        display: block;
-    }
-
-    .latest-performance-title, .year-slider-container {
+  .latest-performance-title,
+  .year-slider-container {
     width: 100%;
     margin-bottom: 20px;
-    }
+  }
 }
 
 /* slider styling */
 
 .year-slider-container {
-    width: 350px;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: 0;
+  width: 350px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
-.rc-slider-handle, .rc-slider-handle:hover, .rc-slider-handle:active,
-.rc-slider-handle-click-focused:focus, .rc-slider-click-handle-focused {
-    border: 2px solid var(--pink);
-    background-color: var(--pink);
-    border-color: var(--pink);
-    box-shadow: none !important;
+.rc-slider-handle,
+.rc-slider-handle:hover,
+.rc-slider-handle:active,
+.rc-slider-handle-click-focused:focus,
+.rc-slider-click-handle-focused {
+  border: 2px solid var(--pink);
+  background-color: var(--pink);
+  border-color: var(--pink);
+  box-shadow: none !important;
 }
 
 .rc-slider-dot-active {
-    background: var(--purple);
-    border-color: var(--purple);
-    border-width: 4px;
-    box-shadow: none !important;
+  background: var(--purple);
+  border-color: var(--purple);
+  border-width: 4px;
+  box-shadow: none !important;
 }
 
 .rc-slider-track {
-    background: linear-gradient(to right, var(--purple), var(--pink));
+  background: linear-gradient(to right, var(--purple), var(--pink));
 }
 
 .rc-slider-mark-text-active {
-    color: var(--black);
+  color: var(--black);
 }
 
 /* styling for yearly performance charts */
 .yearly-performance-charts {
-    display: flex;
+  display: flex;
 }
 
-.ratio-chart, .pnl-chart {
-    width:50%;
+.ratio-chart,
+.pnl-chart {
+  width: 50%;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .yearly-performance-charts {
+    display: block;
+  }
 
-    .yearly-performance-charts {
-        display: block;
-    }
-
-   .ratio-chart, .pnl-chart {
+  .ratio-chart,
+  .pnl-chart {
     width: 100%;
     margin-bottom: 20px;
-    }
+  }
 }
 
 /* styling for beta analysis charts */
 .beta-analysis {
-    display: flex;
+  display: flex;
 }
 
-.change-chart, .beta-chart {
-    width:45%;
+.change-chart,
+.beta-chart {
+  width: 45%;
 }
 
 .beta-kpis {
-    width:10%;
-    margin: auto;
+  width: 10%;
+  margin: auto;
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
+  .beta-analysis {
+    display: block;
+  }
 
-    .beta-analysis {
-        display: block;
-    }
-
-   .change-chart, .beta-chart {
+  .change-chart,
+  .beta-chart {
     width: 100%;
     margin-bottom: 20px;
-    }
+  }
 }
