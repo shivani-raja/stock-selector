@@ -113,12 +113,14 @@ def update_yearly_performance_charts(income_statement_data, price_data):
                 html.H2("5 Year Performance"),
                 html.Div(
                     [
-                        html.Div(
-                            dcc.Graph(figure=pnl_chart, config=config),
+                        html.Div([
+                            html.H3("5y revenue + profit/loss"),
+                            dcc.Graph(figure=pnl_chart, config=config)],
                             className="pnl-chart",
                         ),
-                        html.Div(
-                            dcc.Graph(figure=ratio_chart, config=config),
+                        html.Div([
+                            html.H3("5y profitability margins"),
+                            dcc.Graph(figure=ratio_chart, config=config)],
                             className="ratio-chart",
                         ),
                     ],

@@ -2,10 +2,12 @@ from os import times
 
 from dash import Dash, html, dcc, Input, Output, callback_context
 from raw.get_ticker_data import get_ticker_data
+from raw.get_market_data import get_market_data
 from raw.time_of_day import time_of_day
 from domain.company_overview import update_company_overview_charts
-from domain.yearly_performance_charts import update_yearly_performance_charts
 from domain.latest_performance_charts import update_latest_performance_charts
+from domain.yearly_performance_charts import update_yearly_performance_charts
+from domain.beta_analysis import update_beta_analysis_charts
 
 # from domain.cashflow_charts import update_cashflow_charts
 import pandas as pd
@@ -16,6 +18,7 @@ config = {"displayModeBar": False}
 
 # initialise app
 app = Dash(__name__)
+app.title = 'Stock Analysis'
 
 # get greeting
 greeting = time_of_day()
@@ -48,8 +51,14 @@ app.layout = html.Div(
             [
                 html.Div(
                     [
-                        html.Div(id="latest-performance-title", className="latest-performance-title"),
-                        html.Div(id="year-slider-container", className="year-slider-container"),
+                        html.Div(
+                            id="latest-performance-title",
+                            className="latest-performance-title",
+                        ),
+                        html.Div(
+                            id="year-slider-container",
+                            className="year-slider-container",
+                        ),
                     ],
                     className="latest-performance-intro",
                 ),
@@ -115,22 +124,6 @@ def update_company_overview(data):
     children = update_company_overview_charts(profile_data, price_data)
     return html.Div(children)
 
-
-# update 5y performance
-@app.callback(
-    Output("yearly-performance", "children"),
-    Input("store-data", "data"),
-)
-def update_yearly_performance(data):
-
-    # get data
-    income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
-    price_data = pd.read_json(data["price_data"], orient="split")
-
-    children = update_yearly_performance_charts(income_statement_data, price_data)
-    return html.Div(children)
-
-
 # update latest performance
 @app.callback(
     [
@@ -151,9 +144,38 @@ def update_latest_performance(data, year):
         children = update_latest_performance_charts(
             sankey_nodes, sankey_links, cashflow_data, year
         )
-        return html.Div(children), html.H2(f"Latest Performance: {year}")
+        return html.Div(children), html.H2(f"Latest Performance")
     else:
         return [], []
+
+# update 5y performance
+@app.callback(
+    Output("yearly-performance", "children"),
+    Input("store-data", "data"),
+)
+def update_yearly_performance(data):
+
+    # get data
+    income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
+    price_data = pd.read_json(data["price_data"], orient="split")
+
+    children = update_yearly_performance_charts(income_statement_data, price_data)
+    return html.Div(children)
+
+# update beta analysis
+@app.callback(
+    Output("beta-analysis", "children"),
+    Input("store-data", "data"),
+    Input("ticker", "value"),
+)
+def update_beta_analysis(data, ticker):
+
+    # get data
+    price_data = pd.read_json(data["price_data"], orient="split")
+    market_data = get_market_data()
+
+    children = update_beta_analysis_charts(price_data, market_data, ticker)
+    return html.Div(children)
 
 
 # Run the Dash app

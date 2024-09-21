@@ -22,6 +22,7 @@ def get_currency_symbol(currency):
         "SEK": "kr",  # Swedish Krona
         "NOK": "kr",  # Norwegian Krone
         "DKK": "kr",  # Danish Krone
+
     }
 
     return currency_symbols.get(currency)

@@ -78,21 +78,27 @@ def update_latest_performance_charts(sankey_nodes, sankey_links, cashflow_data, 
             base=0,
             decreasing={"marker": {"color": get_color("red")}},
             increasing={"marker": {"color": get_color("green")}},
-            totals={"marker": {"color": get_color("purple")}}
+            totals={"marker": {"color": get_color("purple")}},
         )
     )
 
-    cashflow_chart.update_layout(**chart_layout, yaxis_tickprefix=currency)
+    cashflow_chart.update_layout(
+        **chart_layout,
+        yaxis_tickprefix=currency,
+        hovermode=False,
+    )
 
     return [
         html.Div(
             [
-                html.Div(
-                    dcc.Graph(figure=sankey_chart, config=config),
+                html.Div([
+                    html.H3(f"Sankey {year}"),
+                    dcc.Graph(figure=sankey_chart, config=config)],
                     className="sankey-chart",
                 ),
-                html.Div(
-                    dcc.Graph(figure=cashflow_chart, config=config),
+                html.Div([
+                    html.H3(f"Cashflow statement {year}"),
+                    dcc.Graph(figure=cashflow_chart, config=config)],
                     className="cashflow-chart",
                 ),
             ],

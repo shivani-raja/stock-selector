@@ -1,5 +1,4 @@
 import requests
-import json
 import pandas as pd
 from raw.currency_symbols import get_currency_symbol
 from raw.get_sankey_data import get_sankey_data
