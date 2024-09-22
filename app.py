@@ -1,5 +1,3 @@
-from os import times
-
 from dash import Dash, html, dcc, Input, Output, callback_context
 from raw.get_ticker_data import get_ticker_data
 from raw.get_market_data import get_market_data
@@ -8,8 +6,6 @@ from domain.company_overview import update_company_overview_charts
 from domain.latest_performance_charts import update_latest_performance_charts
 from domain.yearly_performance_charts import update_yearly_performance_charts
 from domain.beta_analysis import update_beta_analysis_charts
-
-# from domain.cashflow_charts import update_cashflow_charts
 import pandas as pd
 
 

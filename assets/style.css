@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Inter);
+
 :root {
   --black: #101827;
   --chart-background-dark: #1c2432;
@@ -15,7 +17,7 @@
 /* general styling */
 
 body {
-  font-family: "inter";
+  font-family: "inter", sans-serif;
   margin: 0px;
 }
 
@@ -75,7 +77,7 @@ h3 {
   border-width: 2.5px;
   border-style: solid;
   border-image: linear-gradient(to right, var(--pink), var(--purple)) 1;
-  width: 240px;
+  width: 280px;
   margin: 30px 0px 10px 20px;
 }
 
