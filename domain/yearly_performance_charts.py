@@ -61,31 +61,31 @@ def update_yearly_performance_charts(income_statement_data, price_data):
     ratio_chart = go.Figure(
         go.Scatter(
             x=income_statement_data["calendarYear"],
-            y=income_statement_data["grossProfitRatio"],
+            y=income_statement_data["grossProfitRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("red"), width=2),
             name="Gross Profit Margin",
-            hovertemplate="%{y:.2f}%",
+            hovertemplate="%{y:.0f}%",
         )
     )
     ratio_chart.add_trace(
         go.Scatter(
             x=income_statement_data["calendarYear"],
-            y=income_statement_data["operatingIncomeRatio"],
+            y=income_statement_data["operatingIncomeRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("orange"), width=2),
             name="Operating Profit Margin",
-            hovertemplate="%{y:.2f}%",
+            hovertemplate="%{y:.0f}%",
         )
     )
     ratio_chart.add_trace(
         go.Scatter(
             x=income_statement_data["calendarYear"],
-            y=income_statement_data["netIncomeRatio"],
+            y=income_statement_data["netIncomeRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("pink"), width=2),
             name="Net Profit Margin",
-            hovertemplate="%{y:.2f}%",
+            hovertemplate="%{y:.0f}%",
         )
     )
 
@@ -98,7 +98,7 @@ def update_yearly_performance_charts(income_statement_data, price_data):
             bgcolor=get_color("white"),
         ),
         yaxis_ticksuffix="%",
-        yaxis_tickformat=".2f",
+        yaxis_tickformat=".0f",
     )
 
     ratio_chart.update_xaxes(

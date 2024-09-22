@@ -110,7 +110,7 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
             bgcolor=get_color("white"),
         ),
         yaxis_ticksuffix="%",
-        yaxis_tickformat=".2f",
+        yaxis_tickformat=".0f",
     )
 
     change_chart.update_xaxes(
