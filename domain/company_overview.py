@@ -128,9 +128,17 @@ def update_company_overview_charts(profile_data, price_data):
                 ),
                 html.Div(
                     [
-                        html.Div([
-                            html.H3("Share price history"),
-                            dcc.Graph(figure=price_chart, config=config)],
+                        html.Div(
+                            [
+                                html.Div(
+                                    [
+                                        html.H3("Share price history - current price:"),
+                                        html.H3(f"{currency}{profile_data.price}", className="current-price"),
+                                    ],
+                                    className="current-price-container"
+                                ),
+                                dcc.Graph(figure=price_chart, config=config),
+                            ],
                             className="price-chart",
                         ),
                         html.Div(kpi_charts, className="kpi-chart"),

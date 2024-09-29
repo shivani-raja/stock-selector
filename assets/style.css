@@ -162,6 +162,17 @@ input.dash-input-internal-autofill-selected {
   }
 }
 
+.current-price {
+    background: -webkit-linear-gradient(45deg, var(--pink), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+    padding-left: 10px !important;
+}
+
+.current-price-container {
+    display: flex;
+}
+
 /* styling for kpi charts */
 
 .kpi-chart {
