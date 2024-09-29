@@ -32,46 +32,59 @@ def get_ticker_data(ticker):
         "price_data",
     ]
     output_data = {}
+    error_message = []
 
     for table in required_data:
         url = url_dict.get(table)
         response = requests.get(url)
-        if response.status_code == 200:
+        if response.status_code == 429:
+            error_message.append(
+                f"Max API calls reached. Please try again later.")
+        elif response.status_code == 200:
             data = response.json()
-            if table == "price_data":
-                data = data.get("historical", [])
 
-            # parse JSON
-            df = pd.json_normalize(data)
+            if data:
+                if table == "price_data":
+                    data = data.get("historical", [])
 
-            # amend data types
-            if table == "income_statement_data":
-                df["calendarYear"] = df["calendarYear"].astype(int)
-            elif table == "price_data":
-                df["date"] = pd.to_datetime(df["date"])
+                # parse JSON
+                df = pd.json_normalize(data)
 
-            # get currency
-            if table != "price_data":
-                try:
-                    currency = df["reportedCurrency"].values[0]
-                    df["currency_symbol"] = get_currency_symbol(currency)
-                except KeyError:
-                    currency = df["currency"].values[0]
-                    df["currency_symbol"] = get_currency_symbol(currency)
+                # amend data types
+                if table == "income_statement_data":
+                    df["calendarYear"] = df["calendarYear"].astype(int)
+                elif table == "price_data":
+                    df["date"] = pd.to_datetime(df["date"])
 
-            # append to output
-            output_data[table] = df.to_json(orient="split")
+                # get currency
+                if table != "price_data":
+                    try:
+                        currency = df["reportedCurrency"].values[0]
+                        df["currency_symbol"] = get_currency_symbol(currency)
+                    except KeyError:
+                        currency = df["currency"].values[0]
+                        df["currency_symbol"] = get_currency_symbol(currency)
 
+                # append to output
+                output_data[table] = df.to_json(orient="split")
+            else:
+                error_message.append(
+                    f"Failed to fetch data for {ticker.upper()}. Please enter a valid ticker symbol."
+                )
         else:
-            print(f"failed to fetch {table} for {ticker}: {response.status_code}")
+            error_message.append(f"Error {response.status_code} incurred for {ticker.upper()}.")
 
-    # get sankey data + append
-    income_statement_data = pd.read_json(
-        output_data["income_statement_data"], orient="split"
-    )
-    sankey_nodes, sankey_links = get_sankey_data(income_statement_data)
+    if error_message:
+        error_message = error_message[0]
+        output_data = []
+    else:
+        # get sankey data + append
+        income_statement_data = pd.read_json(
+            output_data["income_statement_data"], orient="split"
+        )
+        sankey_nodes, sankey_links = get_sankey_data(income_statement_data)
 
-    output_data["sankey_nodes"] = sankey_nodes.to_json(orient="split")
-    output_data["sankey_links"] = sankey_links.to_json(orient="split")
+        output_data["sankey_nodes"] = sankey_nodes.to_json(orient="split")
+        output_data["sankey_links"] = sankey_links.to_json(orient="split")
 
-    return output_data
+    return output_data, error_message

@@ -38,6 +38,7 @@ app.layout = html.Div(
                     ],
                     className="search-box",
                 ),
+                html.Div(id="error-message", className="error-message"),
             ],
             className="light",
         ),
@@ -72,7 +73,8 @@ app.layout = html.Div(
 
 
 @app.callback(
-    Output("store-data", "data"),
+    [Output("store-data", "data"),
+     Output("error-message", "children")],
     Input("search-button", "n_clicks"),
     Input("ticker", "value"),
 )
@@ -82,11 +84,12 @@ def get_all_data(n_clicks, ticker):
             return {}
         else:
             # get required data
-            data = get_ticker_data(ticker)
+            data, error_message = get_ticker_data(ticker)
 
     else:
         data = []
-    return data
+        error_message = []
+    return data, html.P(error_message)
 
 
 @app.callback(
