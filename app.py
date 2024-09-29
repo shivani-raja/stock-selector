@@ -13,7 +13,7 @@ import pandas as pd
 config = {"displayModeBar": False}
 
 # initialise app
-app = Dash(__name__)
+app = Dash(__name__,  suppress_callback_exceptions=True)
 app.title = "Stock Analysis"
 server = app.server
 
@@ -114,12 +114,15 @@ def update_slider(data):
 )
 def update_company_overview(data):
 
-    # get data
-    profile_data = pd.read_json(data["profile_data"], orient="split").squeeze()
-    price_data = pd.read_json(data["price_data"], orient="split")
+    if data:
+        # get data
+        profile_data = pd.read_json(data["profile_data"], orient="split").squeeze()
+        price_data = pd.read_json(data["price_data"], orient="split")
 
-    children = update_company_overview_charts(profile_data, price_data)
-    return html.Div(children)
+        children = update_company_overview_charts(profile_data, price_data)
+        return html.Div(children)
+    else:
+        return []
 
 
 # update latest performance
@@ -132,17 +135,18 @@ def update_company_overview(data):
     Input("year-slider", "value"),
 )
 def update_latest_performance(data, year):
-    triggered = callback_context.triggered
-    if triggered and "year-slider" in triggered[0]["prop_id"]:
-        # get data
-        sankey_nodes = pd.read_json(data["sankey_nodes"], orient="split")
-        sankey_links = pd.read_json(data["sankey_links"], orient="split")
-        cashflow_data = pd.read_json(data["cashflow_data"], orient="split")
+    if year and data:
+        triggered = callback_context.triggered
+        if triggered and "year-slider" in triggered[0]["prop_id"]:
+            # get data
+            sankey_nodes = pd.read_json(data["sankey_nodes"], orient="split")
+            sankey_links = pd.read_json(data["sankey_links"], orient="split")
+            cashflow_data = pd.read_json(data["cashflow_data"], orient="split")
 
-        children = update_latest_performance_charts(
-            sankey_nodes, sankey_links, cashflow_data, year
-        )
-        return html.Div(children), html.H2(f"Latest Performance")
+            children = update_latest_performance_charts(
+                sankey_nodes, sankey_links, cashflow_data, year
+            )
+            return html.Div(children), html.H2(f"Latest Performance")
     else:
         return [], []
 
@@ -154,12 +158,15 @@ def update_latest_performance(data, year):
 )
 def update_yearly_performance(data):
 
-    # get data
-    income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
-    price_data = pd.read_json(data["price_data"], orient="split")
+    if data:
+        # get data
+        income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
+        price_data = pd.read_json(data["price_data"], orient="split")
 
-    children = update_yearly_performance_charts(income_statement_data, price_data)
-    return html.Div(children)
+        children = update_yearly_performance_charts(income_statement_data, price_data)
+        return html.Div(children)
+    else:
+        return []
 
 
 # update beta analysis
@@ -170,12 +177,15 @@ def update_yearly_performance(data):
 )
 def update_beta_analysis(data, ticker):
 
-    # get data
-    price_data = pd.read_json(data["price_data"], orient="split")
-    market_data = get_market_data()
+    if data:
+        # get data
+        price_data = pd.read_json(data["price_data"], orient="split")
+        market_data = get_market_data()
 
-    children = update_beta_analysis_charts(price_data, market_data, ticker)
-    return html.Div(children)
+        children = update_beta_analysis_charts(price_data, market_data, ticker)
+        return html.Div(children)
+    else:
+        return []
 
 
 # Run the Dash app
