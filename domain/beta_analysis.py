@@ -24,6 +24,9 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
     min_date = market_data["Date"].min()
     price_data = price_data.loc[price_data["date"] >= min_date]
 
+    price_data = price_data.reset_index()
+    market_data = market_data.reset_index()
+
     # make col names the same
     market_data = market_data.rename(
         columns={"Date": "date", "Adj Close": "adjClose", "return": "changePercent"}
