@@ -93,11 +93,16 @@ def update_latest_performance_charts(sankey_nodes, sankey_links, cashflow_data, 
             [
                 html.Div([
                     html.H3(f"Sankey {year}"),
+                    html.P("A breakdown of the income statement from revenue to net income."),
                     dcc.Graph(figure=sankey_chart, config=config)],
                     className="sankey-chart",
                 ),
                 html.Div([
                     html.H3(f"Cashflow statement {year}"),
+                    html.P("Operating cashflows (CFO) are an adjusted form of net income representing cashflows earned "
+                           "from core business operations over the reporting period. Investing cashflows relate to "
+                           "long-term investments, and financing cashflows relate to transactions involving "
+                           "shareholders and debt holders."),
                     dcc.Graph(figure=cashflow_chart, config=config)],
                     className="cashflow-chart",
                 ),

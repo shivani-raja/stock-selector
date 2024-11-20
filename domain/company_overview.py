@@ -133,7 +133,7 @@ def update_company_overview_charts(profile_data, price_data):
                                 html.Div(
                                     [
                                         html.H3("Share price history - current price:"),
-                                        html.H3(f"{currency}{profile_data.price}", className="current-price"),
+                                        html.H3(f"{currency}{profile_data.price:.2f}", className="current-price"),
                                     ],
                                     className="current-price-container"
                                 ),

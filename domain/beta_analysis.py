@@ -1,12 +1,8 @@
-from calendar import month
-
 from dash import html, dcc
 from raw.chart_layout import get_layout
 from raw.colors import get_color
-import statistics
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
@@ -72,12 +68,19 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
     model.fit(X, y)
     beta = model.coef_[0]
     alpha = model.intercept_
-    stddev = statistics.stdev(y)
+    stddev_x = np.std(X, ddof=1)
+    stddev_y = np.std(y, ddof=1)
+
+    stddev_x_annualised = stddev_x * np.sqrt(12)
+    stddev_y_annualised = stddev_y * np.sqrt(12)
 
     # add regression line data for chart
     month_end_data["trend_line"] = month_end_data["monthly_return_SP500"].apply(
         lambda x: (x * beta) + alpha
     )
+
+    month_end_data = month_end_data.reset_index()
+    month_end_data['formatted_date'] = month_end_data['date'].dt.strftime('%b %Y')
 
     change_chart = go.Figure(
         go.Scatter(
@@ -123,6 +126,11 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
             y=month_end_data[f"monthly_return_{ticker}"],
             mode="markers",
             marker=dict(color=get_color("orange")),
+            customdata=month_end_data["formatted_date"],
+            hovertemplate="%{customdata}<br>" +
+                          "S&P500: %{x:.2f}%<br>" +
+                          f"{ticker.upper()}: " + "%{y:.2f}%<br>",
+            name="",
         )
     )
 
@@ -132,15 +140,23 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
             y=month_end_data["trend_line"],
             mode="lines",
             line=dict(color=get_color("red")),
+            name="",
+            hoverinfo="skip"
         )
     )
 
     beta_chart.update_layout(
         **chart_layout,
-        xaxis_title="S&P500",
-        yaxis_title=f"{ticker.upper()}",
+        xaxis_title="S&P500 returns",
+        yaxis_title=f"{ticker.upper()} returns",
         showlegend=False,
-        hovermode=False,
+        hoverlabel=dict(
+            font_color=get_color("black"),
+            bordercolor=get_color("black"),
+            bgcolor=get_color("white"),
+            font_family="Inter",
+            font_size=12,
+        )
     )
 
     beta_kpis = html.Div(
@@ -154,8 +170,15 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
             ),
             html.Div(
                 [
-                    html.P("StdDev", className="kpi-header"),
-                    html.P(f"{stddev:.2f}", className="kpi-value"),
+                    html.P(f"StdDev {ticker.upper()}", className="kpi-header"),
+                    html.P(f"{stddev_y_annualised:.2f}", className="kpi-value"),
+                ],
+                className="kpi-child",
+            ),
+            html.Div(
+                [
+                    html.P(f"StdDev S&P500", className="kpi-header"),
+                    html.P(f"{stddev_x_annualised:.2f}", className="kpi-value"),
                 ],
                 className="kpi-child",
             ),
@@ -176,20 +199,35 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
                 html.H2("Beta Analysis"),
                 html.Div(
                     [
-                        html.Div([
-                            html.H3("5y % change vs. S&P500"),
-                            dcc.Graph(figure=change_chart, config=config)],
+                        html.Div(
+                            [
+                                html.H3("Change vs. S&P500"),
+                                html.P(
+                                    f"Cumulative percentage change of {ticker.upper()} and the S&P500 over the past "
+                                    f"5 years."
+                                ),
+                                dcc.Graph(figure=change_chart, config=config),
+                            ],
                             className="change-chart",
                         ),
-                        html.Div([
-                            html.H3("5y month-end beta analysis"),
-                            dcc.Graph(figure=beta_chart, config=config)],
+                        html.Div(
+                            [
+                                html.H3("Beta analysis"),
+                                html.P(
+                                    f"A plot of {ticker.upper()} returns compared with the S&P500 at month end for "
+                                    f"the past 5 years. Beta is a measure of systematic risk and is determined by the "
+                                    f"slope of the regression line fitted to the data, and indicates the stock's "
+                                    f"sensitivity to market movements. The regression model intercept is denoted by "
+                                    f"Alpha and represents excess return on the market."
+                                ),
+                                dcc.Graph(figure=beta_chart, config=config),
+                            ],
                             className="beta-chart",
                         ),
                         html.Div(beta_kpis, className="beta-kpi-chart"),
                     ],
                     className="beta-analysis",
-                )
+                ),
             ],
             className="light",
         )
