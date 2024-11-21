@@ -11,7 +11,7 @@ config = {"displayModeBar": False}
 chart_layout = get_layout(palette="light")
 
 
-def calculate_percentage_change(df):
+def _calculate_percentage_change(df):
     df = df.sort_values("date")
     start_price = df["adjClose"].iloc[0]
     df["rolling_change"] = (df["adjClose"] - start_price) / start_price * 100
@@ -24,27 +24,30 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
     min_date = market_data["Date"].min()
     price_data = price_data.loc[price_data["date"] >= min_date]
 
-    price_data = price_data.reset_index()
-    market_data = market_data.reset_index()
-
     # make col names the same
     market_data = market_data.rename(
         columns={"Date": "date", "Adj Close": "adjClose", "return": "changePercent"}
     )
 
     # calculate % change
-    price_data = calculate_percentage_change(price_data)
-    market_data = calculate_percentage_change(market_data)
+    price_data = _calculate_percentage_change(price_data)
+    market_data = _calculate_percentage_change(market_data)
+
+    #flatten table
+    market_data.columns = [
+        ''.join(col).replace('^GSPC', '').strip() if isinstance(col, tuple) else col.replace('^GSPC', '')
+        for col in market_data.columns
+    ]
 
     # merge data
     returns = pd.merge(
-        price_data, market_data, on="date", suffixes=(f"_{ticker}", "_SP500")
+        price_data, market_data, how="inner", on="date", suffixes=(f"_{ticker}", "_SP500")
     )
 
     # for beta calculations we use month end values
     # fill nas
     returns_dated = returns.set_index("date")
-    month_end_data = returns_dated.resample("BM").last()
+    month_end_data = returns_dated.resample("BME").last()
 
     # get monthly returns
     month_end_data["monthly_return_SP500"] = (
