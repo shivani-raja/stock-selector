@@ -3,6 +3,7 @@ dash-bootstrap-components
 dash-core-components
 dash-html-components
 dash-table
+dotenv
 Flask
 gunicorn
 html5lib
