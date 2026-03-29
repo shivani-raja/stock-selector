@@ -22,12 +22,17 @@ def update_yearly_performance_charts(income_statement_data, price_data):
         axis=1,
     )
 
+    # calculate margins
+    ratios = ["grossProfit", "operatingIncome", "netIncome"]
+    for r in ratios:
+        income_statement_data[f"{r}Ratio"] = income_statement_data[r] / income_statement_data["revenue"]
+
     # update PnL chart
     pnl_chart = go.Figure(
         data=[
             go.Bar(
                 name="Revenue",
-                x=income_statement_data["calendarYear"],
+                x=income_statement_data["fiscalYear"],
                 y=income_statement_data["revenue"],
                 text=[
                     f"{currency}{format_number(val)}"
@@ -38,7 +43,7 @@ def update_yearly_performance_charts(income_statement_data, price_data):
             ),
             go.Bar(
                 name="Net Income/Loss",
-                x=income_statement_data["calendarYear"],
+                x=income_statement_data["fiscalYear"],
                 y=income_statement_data["netIncome"],
                 text=[
                     f"{currency}{format_number(val)}"
@@ -60,7 +65,7 @@ def update_yearly_performance_charts(income_statement_data, price_data):
     # update ratio chart
     ratio_chart = go.Figure(
         go.Scatter(
-            x=income_statement_data["calendarYear"],
+            x=income_statement_data["fiscalYear"],
             y=income_statement_data["grossProfitRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("red"), width=2),
@@ -70,7 +75,7 @@ def update_yearly_performance_charts(income_statement_data, price_data):
     )
     ratio_chart.add_trace(
         go.Scatter(
-            x=income_statement_data["calendarYear"],
+            x=income_statement_data["fiscalYear"],
             y=income_statement_data["operatingIncomeRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("orange"), width=2),
@@ -80,7 +85,7 @@ def update_yearly_performance_charts(income_statement_data, price_data):
     )
     ratio_chart.add_trace(
         go.Scatter(
-            x=income_statement_data["calendarYear"],
+            x=income_statement_data["fiscalYear"],
             y=income_statement_data["netIncomeRatio"]*100,
             mode="lines+markers",
             line=dict(color=get_color("pink"), width=2),

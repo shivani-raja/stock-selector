@@ -79,7 +79,7 @@ def update_company_overview_charts(profile_data, price_data):
             html.Div(
                 [
                     html.P("Exchange", className="kpi-header"),
-                    html.P(f"{profile_data.exchangeShortName}", className="kpi-value"),
+                    html.P(f"{profile_data.exchange}", className="kpi-value"),
                 ],
                 className="kpi-child",
             ),
@@ -104,7 +104,7 @@ def update_company_overview_charts(profile_data, price_data):
                 [
                     html.P("Market Cap", className="kpi-header"),
                     html.P(
-                        f"{currency}{format_number(profile_data.mktCap)}",
+                        f"{currency}{format_number(profile_data.marketCap)}",
                         className="kpi-value",
                     ),
                 ],

@@ -17,7 +17,7 @@ def update_latest_performance_charts(sankey_nodes, sankey_links, cashflow_data, 
     # filter data on year
     sankey_nodes = sankey_nodes[sankey_nodes["year"] == year].squeeze()
     sankey_links = sankey_links[sankey_links["year"] == year].squeeze()
-    cashflow_data = cashflow_data[cashflow_data["calendarYear"] == year].squeeze()
+    cashflow_data = cashflow_data[cashflow_data["fiscalYear"] == year].squeeze()
 
     sankey_chart = go.Figure(
         data=[
@@ -63,15 +63,15 @@ def update_latest_performance_charts(sankey_nodes, sankey_links, cashflow_data, 
             y=[
                 cashflow_data.cashAtBeginningOfPeriod,
                 cashflow_data.netCashProvidedByOperatingActivities,
-                cashflow_data.netCashUsedForInvestingActivites,
-                cashflow_data.netCashUsedProvidedByFinancingActivities,
+                cashflow_data.netCashProvidedByInvestingActivities,
+                cashflow_data.netCashProvidedByFinancingActivities,
                 cashflow_data.cashAtEndOfPeriod,
             ],
             text=[
                 f"{currency}{format_number(cashflow_data.cashAtBeginningOfPeriod)}",
                 f"{currency}{format_number(cashflow_data.netCashProvidedByOperatingActivities)}",
-                f"{currency}{format_number(cashflow_data.netCashUsedForInvestingActivites)}",
-                f"{currency}{format_number(cashflow_data.netCashUsedProvidedByFinancingActivities)}",
+                f"{currency}{format_number(cashflow_data.netCashProvidedByInvestingActivities)}",
+                f"{currency}{format_number(cashflow_data.netCashProvidedByFinancingActivities)}",
                 f"{currency}{format_number(cashflow_data.cashAtEndOfPeriod)}",
             ],
             connector={"line": {"color": get_color("chart_line_dark")}},

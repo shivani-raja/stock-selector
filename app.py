@@ -1,4 +1,7 @@
+import pandas as pd
+from datetime import datetime
 from dash import Dash, html, dcc, Input, Output, callback_context
+
 from raw.get_ticker_data import get_ticker_data
 from raw.get_market_data import get_market_data
 from raw.time_of_day import time_of_day
@@ -6,7 +9,6 @@ from domain.company_overview import update_company_overview_charts
 from domain.latest_performance_charts import update_latest_performance_charts
 from domain.yearly_performance_charts import update_yearly_performance_charts
 from domain.beta_analysis import update_beta_analysis_charts
-import pandas as pd
 
 
 # define config for charts
@@ -99,11 +101,11 @@ def get_all_data(n_clicks, ticker):
 def update_slider(data):
     if data:
         return dcc.Slider(
-            min=2019,
-            max=2023,
+            min=datetime.now().year - 5,
+            max=datetime.now().year,
             step=1,
-            value=2023,
-            marks={year: str(year) for year in range(2019, 2024)},
+            value=datetime.now().year,
+            marks={year: str(year) for year in range(datetime.now().year - 5, datetime.now().year)},
             id="year-slider",
         )
     else:
@@ -193,4 +195,4 @@ def update_beta_analysis(data, ticker):
 
 # Run the Dash app
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)
