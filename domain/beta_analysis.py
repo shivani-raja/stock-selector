@@ -22,6 +22,7 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
 
     # trim price data based on available market data
     min_date = market_data["Date"].min()
+    price_data["date"] = pd.to_datetime(price_data["date"])
     price_data = price_data.loc[price_data["date"] >= min_date]
 
     # make col names the same

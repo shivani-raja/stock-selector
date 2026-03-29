@@ -104,7 +104,7 @@ def update_slider(data):
             min=datetime.now().year - 5,
             max=datetime.now().year,
             step=1,
-            value=datetime.now().year,
+            value=datetime.now().year - 1,
             marks={year: str(year) for year in range(datetime.now().year - 5, datetime.now().year)},
             id="year-slider",
         )
@@ -121,8 +121,8 @@ def update_company_overview(data):
 
     if data:
         # get data
-        profile_data = pd.read_json(data["profile_data"], orient="split").squeeze()
-        price_data = pd.read_json(data["price_data"], orient="split")
+        profile_data = pd.DataFrame(data["profile_data"]).squeeze()
+        price_data = pd.DataFrame(data["price_data"])
 
         children = update_company_overview_charts(profile_data, price_data)
         return html.Div(children)
@@ -144,9 +144,9 @@ def update_latest_performance(data, year):
         triggered = callback_context.triggered
         if triggered and "year-slider" in triggered[0]["prop_id"]:
             # get data
-            sankey_nodes = pd.read_json(data["sankey_nodes"], orient="split")
-            sankey_links = pd.read_json(data["sankey_links"], orient="split")
-            cashflow_data = pd.read_json(data["cashflow_data"], orient="split")
+            sankey_nodes = pd.DataFrame(data["sankey_nodes"])
+            sankey_links = pd.DataFrame(data["sankey_links"])
+            cashflow_data = pd.DataFrame(data["cashflow_data"])
 
             children = update_latest_performance_charts(
                 sankey_nodes, sankey_links, cashflow_data, year
@@ -165,8 +165,8 @@ def update_yearly_performance(data):
 
     if data:
         # get data
-        income_statement_data = pd.read_json(data["income_statement_data"], orient="split")
-        price_data = pd.read_json(data["price_data"], orient="split")
+        income_statement_data = pd.DataFrame(data["income_statement_data"])
+        price_data = pd.DataFrame(data["price_data"])
 
         children = update_yearly_performance_charts(income_statement_data, price_data)
         return html.Div(children)
@@ -184,7 +184,7 @@ def update_beta_analysis(data, ticker):
 
     if data:
         # get data
-        price_data = pd.read_json(data["price_data"], orient="split")
+        price_data = pd.DataFrame(data["price_data"])
         market_data = get_market_data()
 
         children = update_beta_analysis_charts(price_data, market_data, ticker)

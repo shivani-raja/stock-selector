@@ -1,5 +1,8 @@
+import os
 import requests
 import pandas as pd
+from dotenv import load_dotenv
+
 from raw.currency_symbols import get_currency_symbol
 from raw.get_sankey_data import get_sankey_data
 
@@ -15,7 +18,8 @@ def get_ticker_data(ticker):
     """
 
     # api key
-    api_key = "52a44d5f713429851c9f7961317e6877"
+    load_dotenv()
+    api_key = os.getenv("FMP_API_KEY")
 
     # define dictionary to store urls
     url_dict = {
@@ -48,7 +52,7 @@ def get_ticker_data(ticker):
                 df = pd.json_normalize(data)
 
                 # amend data types
-                if table == "income_statement_data":
+                if table in ["income_statement_data", "cashflow_data"]:
                     df["fiscalYear"] = df["fiscalYear"].astype(int)
                 elif table == "price_data":
                     df["date"] = pd.to_datetime(df["date"])
@@ -63,7 +67,7 @@ def get_ticker_data(ticker):
                         df["currency_symbol"] = get_currency_symbol(currency)
 
                 # append to output
-                output_data[table] = df.to_json(orient="split")
+                output_data[table] = df.to_dict(orient="records")
             else:
                 error_message.append(
                     f"Failed to fetch data for {ticker.upper()}. Please enter a valid ticker symbol."
@@ -76,12 +80,10 @@ def get_ticker_data(ticker):
         output_data = []
     else:
         # get sankey data + append
-        income_statement_data = pd.read_json(
-            output_data["income_statement_data"], orient="split"
-        )
+        income_statement_data = pd.DataFrame(output_data["income_statement_data"])
         sankey_nodes, sankey_links = get_sankey_data(income_statement_data)
 
-        output_data["sankey_nodes"] = sankey_nodes.to_json(orient="split")
-        output_data["sankey_links"] = sankey_links.to_json(orient="split")
+        output_data["sankey_nodes"] = sankey_nodes.to_dict(orient="records")
+        output_data["sankey_links"] = sankey_links.to_dict(orient="records")
 
     return output_data, error_message
