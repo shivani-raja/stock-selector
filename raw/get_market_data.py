@@ -20,6 +20,6 @@ def get_market_data():
     market_data = market_data.reset_index()
 
     # calculate the daily returns
-    market_data['return'] = market_data['Adj Close'].pct_change()
+    market_data['return'] = market_data['Close'].pct_change()
 
     return market_data

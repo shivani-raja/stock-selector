@@ -18,8 +18,8 @@ def get_sankey_data(df):
     sankey_nodes = pd.DataFrame()
     sankey_links = pd.DataFrame()
 
-    for year in df["calendarYear"]:
-        mask = df[df["calendarYear"] == year].squeeze()
+    for year in df["fiscalYear"]:
+        mask = df[df["fiscalYear"] == year].squeeze()
 
         # data for nodes
         node_data = pd.DataFrame()

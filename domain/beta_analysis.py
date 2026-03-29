@@ -13,8 +13,8 @@ chart_layout = get_layout(palette="light")
 
 def _calculate_percentage_change(df):
     df = df.sort_values("date")
-    start_price = df["adjClose"].iloc[0]
-    df["rolling_change"] = (df["adjClose"] - start_price) / start_price * 100
+    start_price = df["close"].iloc[0]
+    df["rolling_change"] = (df["close"] - start_price) / start_price * 100
     return df
 
 
@@ -26,7 +26,7 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
 
     # make col names the same
     market_data = market_data.rename(
-        columns={"Date": "date", "Adj Close": "adjClose", "return": "changePercent"}
+        columns={"Date": "date", "Close": "close", "return": "changePercent"}
     )
 
     # calculate % change
@@ -51,10 +51,10 @@ def update_beta_analysis_charts(price_data, market_data, ticker):
 
     # get monthly returns
     month_end_data["monthly_return_SP500"] = (
-        month_end_data["adjClose_SP500"].pct_change() * 100
+        month_end_data["close_SP500"].pct_change() * 100
     )
     month_end_data[f"monthly_return_{ticker}"] = (
-        month_end_data[f"adjClose_{ticker}"].pct_change() * 100
+        month_end_data[f"close_{ticker}"].pct_change() * 100
     )
 
     # fill nas

@@ -101,6 +101,15 @@ input.dash-input-internal-autofill-selected {
   margin: 8px 4px;
 }
 
+.dash-input-container {
+  border: none !important;
+  width: 240px
+}
+
+.dash-input-container:active {
+  border: none !important;
+}
+
 /* chart styling */
 
 .dark .dash-graph,

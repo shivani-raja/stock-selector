@@ -19,10 +19,10 @@ def get_ticker_data(ticker):
 
     # define dictionary to store urls
     url_dict = {
-        "profile_data": f"https://financialmodelingprep.com/api/v3/profile/{ticker}?apikey={api_key}",
-        "income_statement_data": f"https://financialmodelingprep.com/api/v3/income-statement/{ticker}?period=annual&apikey={api_key}",
-        "cashflow_data": f"https://financialmodelingprep.com/api/v3/cash-flow-statement/{ticker}?period=annual&apikey={api_key}",
-        "price_data": f"https://financialmodelingprep.com/api/v3/historical-price-full/{ticker}?from=1990-10-10&apikey={api_key}",
+        "profile_data": f"https://financialmodelingprep.com/stable/profile/?symbol={ticker}&apikey={api_key}",
+        "income_statement_data": f"https://financialmodelingprep.com/stable/income-statement/?symbol={ticker}&period=annual&apikey={api_key}",
+        "cashflow_data": f"https://financialmodelingprep.com/stable/cash-flow-statement/?symbol={ticker}&period=annual&apikey={api_key}",
+        "price_data": f"https://financialmodelingprep.com/stable/historical-price-eod/full?symbol={ticker}&from=1990-10-10&apikey={api_key}",
     }
 
     required_data = [
@@ -44,15 +44,12 @@ def get_ticker_data(ticker):
             data = response.json()
 
             if data:
-                if table == "price_data":
-                    data = data.get("historical", [])
-
                 # parse JSON
                 df = pd.json_normalize(data)
 
                 # amend data types
                 if table == "income_statement_data":
-                    df["calendarYear"] = df["calendarYear"].astype(int)
+                    df["fiscalYear"] = df["fiscalYear"].astype(int)
                 elif table == "price_data":
                     df["date"] = pd.to_datetime(df["date"])
 
